@@ -4,6 +4,7 @@
  */
 package queries;
 
+import com.mycompany.modelos.cliente;
 import com.mycompany.modelos.coneccion;
 import com.mycompany.modelos.solicitud;
 import java.sql.Connection;
@@ -154,18 +155,27 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id_solicitud, salario,  FROM solicitud";
+            String sql = "select s.id_solicitud, s.salario, c.nombre, c.direccion, "
+                    + "s.tipo_de_tarjeta, s.fecha_solicitud, s.fecha_autorizado, s.motivo_rechazo "
+                    + "from solicitud as s\n" +
+                        "INNER JOIN cliente as c ON\n" +
+                        "s.id_cliente = c.id\n" +
+                        ";";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
                 int idSolicitud = resultado.getInt("id_solicitud");
                 int salario = resultado.getInt("salario");
-                int tipoDeTarjeta = resultado.getInt("");
+                int tipoDeTarjeta = resultado.getInt("tipo_de_tarjeta");
                 LocalDate fechaSolicitud = resultado.getDate("fecha_solicitud").toLocalDate();
                 LocalDate fechaAutorizado = resultado.getDate("fecha_autorizado").toLocalDate();
                 String motivoRechazo = resultado.getString("motivo_rechazo");
-
+                String nombreCliente = resultado.getString("nombre");
+                
                 solicitud temporal = new solicitud(idSolicitud, salario, tipoDeTarjeta, fechaSolicitud, fechaAutorizado, motivoRechazo);
+                cliente tmp = new cliente(-1,nombreCliente, "");
+                temporal.setCliente(tmp);
+                
                 solicitudes.add(temporal);
             }
 

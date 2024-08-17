@@ -18,6 +18,15 @@ public class solicitud {
   LocalDate fechaAutorizado;
   String motivoRechazo;
    
+  cliente cliente;
+
+    public cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(cliente cliente) {
+        this.cliente = cliente;
+    }
 
     public int getIdSolicitud() {
         return idSolicitud;
