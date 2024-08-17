@@ -72,7 +72,7 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             connection = coneccion.getConnection();
 
             // 2. Crear el comando SQL para eliminar datos
-            String sql = "DELETE FROM solicitud WHERE id = ?";
+            String sql = "DELETE FROM solicitud WHERE id_solicitud = ?";
 
             // 3. Crear el PreparedStatement
             preparedStatement = connection.prepareStatement(sql);
@@ -154,11 +154,11 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id,salario,direccion FROM solicitud";
+            String sql = "SELECT id_solicitud, salario,  FROM solicitud";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
-                int idSolicitud = resultado.getInt("idSolicitud");
+                int idSolicitud = resultado.getInt("id_solicitud");
                 int salario = resultado.getInt("salario");
                 int tipoDeTarjeta = resultado.getInt("");
                 LocalDate fechaSolicitud = resultado.getDate("fecha_solicitud").toLocalDate();
@@ -194,12 +194,12 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id,salario,tipo_de_tarjeta FROM solicitud WHERE id_solicitud = ?";
+            String sql = "SELECT id_solicitud,salario,tipo_de_tarjeta FROM solicitud WHERE id_solicitud = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
-                int idSolicitud = resultado.getInt("idSolicitud");
+                int idSolicitud = resultado.getInt("id_solicitud");
                 int salario = resultado.getInt("salario");
                 int tipoDeTarjeta = resultado.getInt("");
                 LocalDate fechaSolicitud = resultado.getDate("fecha_solicitud").toLocalDate();

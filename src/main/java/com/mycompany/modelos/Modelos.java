@@ -18,20 +18,19 @@ import queries.QuerySolicitud;
 public class Modelos {
 
     public static void main(String[] args) {
-        //coneccion.getConnection();
-        QuerySolicitud querysolicitud = new QuerySolicitud();
+      // coneccion.getConnection();
+       QuerySolicitud querysolicitud = new QuerySolicitud();
         LocalDate date = LocalDate.of(2024, 8, 14);
         LocalDate date2 = LocalDate.now();
         LocalDate date3 = LocalDate.now();
-        solicitud soliciii = new solicitud(-1, 70000, 7, date, null, "no hubo rechazo");
-        
+        solicitud soliciii = new solicitud(-1, 880000, 7, date, date2, "no hubo rechazo");
         querysolicitud.crear(soliciii);
         
         //cliente cl2 = new cliente(-1, "Cliente 2", "Test");
         //queryCliente.crear(cl2);
+  
         
-        
-        //queryCliente.eliminar(3);
+        //querysolicitud.eliminar(1);
        // queryCliente.eliminar(2);
        
       // cliente clienteana = new cliente(1, "ANA MARIA", "RETALHULEU");
