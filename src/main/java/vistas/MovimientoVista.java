@@ -131,7 +131,7 @@ public class MovimientoVista extends javax.swing.JFrame {
         double dineroActual = tarjetaSeleccionada.getDinero() - monto;
         if (dineroActual >= 0) {
             
-            movimiento tmp = new movimiento(-1, descripcion, monto, establecimiento, fecha, tarjetaSeleccionada.getNoDeTarjeta());
+            movimiento tmp = new movimiento(-1, descripcion, monto, establecimiento, fecha, tarjetaSeleccionada.getNoDeTarjeta(),tipoMovimiento);
             QueryMovimiento queryMovimiento = new QueryMovimiento();
             boolean creado = queryMovimiento.crear(tmp);
             if (creado) {

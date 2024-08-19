@@ -11,14 +11,34 @@ import java.time.LocalDate;
  * @author DELL
  */
 public class solicitud {
-  int idSolicitud;
-  double salario;
-  int tipoDeTarjeta;
-  LocalDate fechaSolicitud;
-  LocalDate fechaAutorizado;
-  String motivoRechazo;
-   
-  cliente cliente;
+
+    int idSolicitud;
+    double salario;
+    int tipoDeTarjeta;
+    LocalDate fechaSolicitud;
+    LocalDate fechaAutorizado;
+    String motivoRechazo;
+    cliente cliente;
+    long noTarjeta;
+    int idCliente;
+
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+    
+
+    public long getNoTarjeta() {
+        return noTarjeta;
+    }
+
+    public void setNoTarjeta(long noTarjeta) {
+        this.noTarjeta = noTarjeta;
+    }
+    
 
     public cliente getCliente() {
         return cliente;
@@ -76,14 +96,14 @@ public class solicitud {
         this.motivoRechazo = motivoRechazo;
     }
 
-    public solicitud(int idSolicitud, double salario, int tipoDeTarjeta, LocalDate fechaSolicitud, LocalDate fechaAutorizado, String motivoRechazo) {
+    public solicitud(int idSolicitud, double salario, int tipoDeTarjeta, LocalDate fechaSolicitud, LocalDate fechaAutorizado, String motivoRechazo, long noTarjeta) {
         this.idSolicitud = idSolicitud;
         this.salario = salario;
         this.tipoDeTarjeta = tipoDeTarjeta;
         this.fechaSolicitud = fechaSolicitud;
         this.fechaAutorizado = fechaAutorizado;
         this.motivoRechazo = motivoRechazo;
+        this.noTarjeta = noTarjeta;
     }
-   
-  
+
 }

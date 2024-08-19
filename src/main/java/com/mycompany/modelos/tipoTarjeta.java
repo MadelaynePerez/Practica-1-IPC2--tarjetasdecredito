@@ -46,10 +46,11 @@ public class tipoTarjeta {
         this.nombreTarjeta = nombreTarjeta;
     }
 
-    public tipoTarjeta(int idTipo, double interes, String nombreTarjeta) {
+    public tipoTarjeta(int idTipo, double interes, String nombreTarjeta, double credito) {
         this.idTipo = idTipo;
         this.interes = interes;
         this.nombreTarjeta = nombreTarjeta;
+        this.credito = credito;
     }
 
     @Override

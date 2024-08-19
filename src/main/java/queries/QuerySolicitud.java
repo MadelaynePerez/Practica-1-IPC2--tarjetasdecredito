@@ -29,7 +29,12 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             // 1. Establecer la conexión con la base de datos
             connection = coneccion.getConnection();
             // 2. Crear el comando SQL para insertar datos
-            String sql = "INSERT INTO solicitud (salario, tipo_de_tarjeta, fecha_solicitud, fecha_autorizado, motivo_rechazo) VALUES ( ?, ?, ?, ?, ? )";
+            String sql;
+            if (entidad.getIdSolicitud() <= 0) {
+                sql = "INSERT INTO solicitud (salario, tipo_de_tarjeta, fecha_solicitud, fecha_autorizado, motivo_rechazo,no_de_tarjeta, id_cliente) VALUES (?, ?,?, ?, ?, ?, ? )";
+            } else {
+                sql = "INSERT INTO solicitud (salario, tipo_de_tarjeta, fecha_solicitud, fecha_autorizado, motivo_rechazo,no_de_tarjeta, id_cliente ,id_solicitud) VALUES (?,?,?, ?, ?, ?, ?, ? )";
+            }
 
             // 3. Crear el PreparedStatement
             preparedStatement = connection.prepareStatement(sql);
@@ -38,12 +43,17 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             preparedStatement.setDouble(1, entidad.getSalario());
             preparedStatement.setInt(2, entidad.getTipoDeTarjeta());
             preparedStatement.setDate(3, java.sql.Date.valueOf(entidad.getFechaSolicitud()));
-            if(entidad.getFechaAutorizado()!= null){
-                 preparedStatement.setDate(4, java.sql.Date.valueOf(entidad.getFechaAutorizado()));
-            }else{
-                preparedStatement.setDate(4,null);
+            if (entidad.getFechaAutorizado() != null) {
+                preparedStatement.setDate(4, java.sql.Date.valueOf(entidad.getFechaAutorizado()));
+            } else {
+                preparedStatement.setDate(4, null);
             }
             preparedStatement.setString(5, entidad.getMotivoRechazo());
+            preparedStatement.setLong(6, entidad.getNoTarjeta());
+            preparedStatement.setInt(7, entidad.getCliente().getId());
+            if (entidad.getIdSolicitud() > 0) {
+                preparedStatement.setInt(8, entidad.getIdSolicitud());
+            }
 
             // 5. Ejecutar el comando
             int rowsInserted = preparedStatement.executeUpdate();
@@ -160,11 +170,11 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             connection = coneccion.getConnection();
 
             String sql = "select s.id_solicitud, s.salario, c.nombre, c.direccion, "
-                    + "s.tipo_de_tarjeta, s.fecha_solicitud, s.fecha_autorizado, s.motivo_rechazo "
-                    + "from solicitud as s\n" +
-                        "INNER JOIN cliente as c ON\n" +
-                        "s.id_cliente = c.id\n" +
-                        ";";
+                    + "s.tipo_de_tarjeta, s.fecha_solicitud, s.fecha_autorizado, s.motivo_rechazo, s.no_de_tarjeta "
+                    + "from solicitud as s\n"
+                    + "INNER JOIN cliente as c ON\n"
+                    + "s.id_cliente = c.id\n"
+                    + ";";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
@@ -175,12 +185,72 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
                 LocalDate fechaAutorizado = resultado.getDate("fecha_autorizado").toLocalDate();
                 String motivoRechazo = resultado.getString("motivo_rechazo");
                 String nombreCliente = resultado.getString("nombre");
-                
-                solicitud temporal = new solicitud(idSolicitud, salario, tipoDeTarjeta, fechaSolicitud, fechaAutorizado, motivoRechazo);
-                cliente tmp = new cliente(-1,nombreCliente, "");
+                Long noTarjeta = resultado.getLong("no_de_tajeta");
+
+                solicitud temporal = new solicitud(idSolicitud, salario, tipoDeTarjeta, fechaSolicitud, fechaAutorizado, motivoRechazo, noTarjeta);
+                cliente tmp = new cliente(-1, nombreCliente, "");
                 temporal.setCliente(tmp);
-                
+
                 solicitudes.add(temporal);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return solicitudes;
+    }
+    
+    public ArrayList<solicitud> filtrarSolicitudes(String tipo, double monto,String f1, String f2, String estado) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ArrayList<solicitud> solicitudes = new ArrayList<>();
+        
+        try {
+            connection = coneccion.getConnection();
+
+            String sql = """
+                         SELECT s.no_de_tarjeta, s.id_solicitud, s.salario , s.fecha_solicitud, tt.id_tipo,
+                         s.id_cliente
+                         FROM solicitud s
+                         INNER JOIN tipo_tarjeta tt
+                         ON s.tipo_de_tarjeta = tt.id_tipo
+                         INNER JOIN tarjetas t
+                         ON t.tipo_tarjeta = tt.id_tipo
+                         WHERE tt.nombre_tipo_tarjeta = ?
+                         AND s.fecha_solicitud BETWEEN ? AND ?
+                         AND t.estado_de_tarjeta = ?
+                         AND t.dinero >= ?
+                         """;
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, tipo);
+            pstmt.setString(2, f1);
+            pstmt.setString(3, f2);
+            pstmt.setString(4, estado);
+            pstmt.setDouble(5, monto);
+            
+            ResultSet resultado = pstmt.executeQuery();
+            while (resultado.next()) {
+                long noTarjeta = resultado.getLong("no_de_tarjeta");
+                int tipoTarjeta = resultado.getInt("id_tipo");
+                int id_cliente = resultado.getInt("id_cliente");
+                LocalDate fecha = resultado.getDate("fecha_solicitud").toLocalDate();
+                double salario = resultado.getDouble("salario");
+                int id_solicitud = resultado.getInt("id_solicitud");
+                
+                solicitud tmp = new solicitud(id_solicitud, salario, tipoTarjeta, fecha, null, "", noTarjeta);
+                tmp.setIdCliente(id_cliente);
+                solicitudes.add(tmp);
             }
 
         } catch (SQLException e) {
@@ -202,25 +272,30 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
 
     @Override
     public solicitud encontrarPorId(int id) {
-    Connection connection = null;
+        Connection connection = null;
         PreparedStatement pstmt = null;
 
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id_solicitud,salario,tipo_de_tarjeta FROM solicitud WHERE id_solicitud = ?";
+            String sql = "SELECT id_solicitud,salario,tipo_de_tarjeta,no_de_tarjeta,fecha_solicitud,fecha_autorizado,motivo_rechazo FROM solicitud WHERE id_solicitud = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
                 int idSolicitud = resultado.getInt("id_solicitud");
                 double salario = resultado.getDouble("salario");
-                int tipoDeTarjeta = resultado.getInt("");
+                int tipoDeTarjeta = resultado.getInt("tipo_de_tarjeta");
                 LocalDate fechaSolicitud = resultado.getDate("fecha_solicitud").toLocalDate();
-                LocalDate fechaAutorizado = resultado.getDate("fecha_autorizado").toLocalDate();
-                String motivoRechazo = resultado.getString("motivo_rechazo");
 
-                solicitud temporal = new solicitud(idSolicitud, salario, tipoDeTarjeta, fechaSolicitud, fechaAutorizado, motivoRechazo);
+                LocalDate fechaAutorizado = null;
+                if (resultado.getDate("fecha_autorizado") != null) {
+                    fechaAutorizado = resultado.getDate("fecha_autorizado").toLocalDate();
+                }
+
+                String motivoRechazo = resultado.getString("motivo_rechazo");
+                Long noTarjeta = resultado.getLong("no_de_tarjeta");
+                solicitud temporal = new solicitud(idSolicitud, salario, tipoDeTarjeta, fechaSolicitud, fechaAutorizado, motivoRechazo, noTarjeta);
                 return temporal;
             }
 
@@ -241,15 +316,16 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
 
         return null;
     }
-    public boolean AutorizarTarjeta(int salario, double credito){
-        
+
+    public boolean AutorizarTarjeta(double salario, double credito) {
+
         double creditoTarjeta = 0.6;
-        if(salario * creditoTarjeta > credito){
-            
+        if (salario * creditoTarjeta > credito) {
+
             return true;
-        }else{
+        } else {
             return false;
         }
-            
+
     }
 }

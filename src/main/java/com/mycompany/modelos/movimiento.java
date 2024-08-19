@@ -17,6 +17,16 @@ public class movimiento {
     double monto;
     String establecimiento;
     LocalDate fecha;
+    String tipoMovimiento;
+
+    public String getTipoMovimiento() {
+        return tipoMovimiento;
+    }
+
+    public void setTipoMovimiento(String tipoMovimiento) {
+        this.tipoMovimiento = tipoMovimiento;
+    }
+    
 
     public long getTarjetaOrigen() {
         return tarjetaOrigen;
@@ -66,13 +76,14 @@ public class movimiento {
         this.monto = monto;
     }
 
-    public movimiento(int idMovimiento, String descripcion, double monto, String establecimiento, LocalDate fecha, Long tarjetaOrigen) {
+    public movimiento(int idMovimiento, String descripcion, double monto, String establecimiento, LocalDate fecha, Long tarjetaOrigen, String tipo) {
         this.idMovimiento = idMovimiento;
         this.descripcion = descripcion;
         this.monto = monto;
         this.establecimiento = establecimiento;
         this.fecha = fecha;
         this.tarjetaOrigen=tarjetaOrigen;
+        this.tipoMovimiento = tipo;
     }
     
     

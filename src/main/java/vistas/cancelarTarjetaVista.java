@@ -118,7 +118,7 @@ public class cancelarTarjetaVista extends javax.swing.JFrame {
         tarjeta tarjetaSeleccionada = (tarjeta) this.tarjetasclientecombo.getSelectedItem();
         QueryTarjeta queryTarjeta = new QueryTarjeta();
         
-        tarjetaSeleccionada.setEstadoTarjeta("Desactivo");
+        tarjetaSeleccionada.setEstadoTarjeta("CANCELADA");
         queryTarjeta.actualizar(tarjetaSeleccionada);
     }//GEN-LAST:event_jButton1ActionPerformed
 
