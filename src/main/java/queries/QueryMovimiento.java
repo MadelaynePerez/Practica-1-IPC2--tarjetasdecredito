@@ -6,10 +6,12 @@ package queries;
 
 import com.mycompany.modelos.coneccion;
 import com.mycompany.modelos.movimiento;
+import com.mycompany.modelos.tarjeta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -26,16 +28,17 @@ public class QueryMovimiento implements IBaseCrud<movimiento> {
             // 1. Establecer la conexión con la base de datos
             connection = coneccion.getConnection();
             // 2. Crear el comando SQL para insertar datos
-            String sql = "INSERT INTO movimiento (nombre, direccion, descripcion, monto) VALUES ( ?, ?, ?, ?)";
+            String sql = "INSERT INTO movimiento ( descripcion, monto, establecimiento, fecha, tarjeta_origen) VALUES (  ?, ?, ?, ?, ?)";
 
             // 3. Crear el PreparedStatement
             preparedStatement = connection.prepareStatement(sql);
 
             // 4. Configurar los valores para el INSERT
-            preparedStatement.setString(1, entidad.getNombre());
-            preparedStatement.setString(2, entidad.getDireccion());
-            preparedStatement.setString(3, entidad.getDescripcion());
-            preparedStatement.setInt(4, entidad.getMonto());
+            preparedStatement.setString(1, entidad.getDescripcion());
+            preparedStatement.setDouble(2, entidad.getMonto());
+            preparedStatement.setString(3, entidad.getEstablecimiento());
+            preparedStatement.setDate(4, java.sql.Date.valueOf(entidad.getFecha()));
+            preparedStatement.setLong(5, entidad.getTarjetaOrigen());
 
             // 5. Ejecutar el comando
             int rowsInserted = preparedStatement.executeUpdate();
@@ -77,17 +80,18 @@ public class QueryMovimiento implements IBaseCrud<movimiento> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id_movimiento, nombre,direccion, descripcion, monto FROM movimiento";
+            String sql = "SELECT id_movimiento,  descripcion, monto, establecimiento, fecha FROM movimiento";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
                 int idMovimiento = resultado.getInt("id_movimiento");
-                String nombre = resultado.getString("nombre");
-                String direccion = resultado.getString("direccion");
                 String descripcion = resultado.getString("descripcion");
-                int monto = resultado.getInt("monto");
+                double monto = resultado.getDouble("monto");
+                String establecimiento = resultado.getString("establecimiento");
+                LocalDate fecha = resultado.getDate("fecha").toLocalDate();
+                Long tarjetaOrigen = resultado.getLong("tarjeta_origen");
 
-                movimiento temporal = new movimiento(idMovimiento, nombre, direccion, descripcion, monto);
+                movimiento temporal = new movimiento(idMovimiento,  descripcion, monto, establecimiento, fecha, tarjetaOrigen);
                 movimientos.add(temporal);
             }
 

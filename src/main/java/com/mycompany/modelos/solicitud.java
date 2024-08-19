@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 public class solicitud {
   int idSolicitud;
-  int salario;
+  double salario;
   int tipoDeTarjeta;
   LocalDate fechaSolicitud;
   LocalDate fechaAutorizado;
@@ -36,11 +36,11 @@ public class solicitud {
         this.idSolicitud = idSolicitud;
     }
 
-    public int getSalario() {
+    public double getSalario() {
         return salario;
     }
 
-    public void setSalario(int salario) {
+    public void setSalario(double salario) {
         this.salario = salario;
     }
 
@@ -76,7 +76,7 @@ public class solicitud {
         this.motivoRechazo = motivoRechazo;
     }
 
-    public solicitud(int idSolicitud, int salario, int tipoDeTarjeta, LocalDate fechaSolicitud, LocalDate fechaAutorizado, String motivoRechazo) {
+    public solicitud(int idSolicitud, double salario, int tipoDeTarjeta, LocalDate fechaSolicitud, LocalDate fechaAutorizado, String motivoRechazo) {
         this.idSolicitud = idSolicitud;
         this.salario = salario;
         this.tipoDeTarjeta = tipoDeTarjeta;

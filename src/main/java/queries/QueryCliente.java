@@ -218,5 +218,6 @@ public class QueryCliente implements IBaseCrud<cliente> {
 
         return null;
     }
+   
 
 }

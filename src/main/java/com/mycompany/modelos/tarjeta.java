@@ -11,18 +11,37 @@ import java.time.LocalDate;
  * @author DELL
  */
 public class tarjeta {
-   int noDeTarjeta;
-   String nombre;
-   int tipoDeTarjeta;
+
+    long noDeTarjeta;
+    String nombre;
+    int tipoDeTarjeta;
     LocalDate fecha;
     String estadoTarjeta;
+    int idCliente;
+    double dinero;
+
+    public double getDinero() {
+        return dinero;
+    }
+
+    public void setDinero(double dinero) {
+        this.dinero = dinero;
+    }
+    
+    public int getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
     
 
-    public int getNoDeTarjeta() {
+    public long getNoDeTarjeta() {
         return noDeTarjeta;
     }
 
-    public void setNoDeTarjeta(int noDeTarjeta) {
+    public void setNoDeTarjeta(long noDeTarjeta) {
         this.noDeTarjeta = noDeTarjeta;
     }
 
@@ -58,13 +77,17 @@ public class tarjeta {
         this.estadoTarjeta = estadoTarjeta;
     }
 
-    public tarjeta(int noDeTarjeta, String nombre, int tipoDeTarjeta, LocalDate fecha, String estadoTarjeta) {
+    public tarjeta(long noDeTarjeta, String nombre, int tipoDeTarjeta, LocalDate fecha, String estadoTarjeta, int idCliente, double dinero) {
         this.noDeTarjeta = noDeTarjeta;
         this.nombre = nombre;
         this.tipoDeTarjeta = tipoDeTarjeta;
         this.fecha = fecha;
         this.estadoTarjeta = estadoTarjeta;
+        this.idCliente = idCliente;
+        this.dinero = dinero;
     }
     
-    
+    public tarjeta(long noTarjeta){
+        this.noDeTarjeta = noTarjeta;
+    }
 }
