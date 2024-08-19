@@ -75,29 +75,34 @@ public class MovimientoVista extends javax.swing.JFrame {
         tarjetasclientecombo = new javax.swing.JComboBox<>();
         fondoMovimiento = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tarjetalable.setText("TARJETA");
-        getContentPane().add(tarjetalable, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
+        getContentPane().add(tarjetalable, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, -1, -1));
 
         jLabel1.setText("TIPO DE MOVIMIENTO");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, -1, -1));
 
         jLabel2.setText("DESCRIPCION");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 130, -1, -1));
 
         jLabel3.setText("ESTABLECIMIENTO");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, -1, -1));
 
         jLabel4.setText("MONTO");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 200, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, -1, -1));
 
         movimientosCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CARGO", "MONTO" }));
         getContentPane().add(movimientosCombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 90, 230, -1));
         getContentPane().add(descripcionTexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 230, -1));
         getContentPane().add(establecimientoTexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 160, 160, -1));
-        getContentPane().add(montotexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, -1, -1));
+        getContentPane().add(montotexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 170, -1));
 
         jButton1.setText("ACEPTAR");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -108,10 +113,15 @@ public class MovimientoVista extends javax.swing.JFrame {
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 270, -1, -1));
 
         clientecombo.setText("CLIENTE");
-        getContentPane().add(clientecombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, -1, -1));
+        getContentPane().add(clientecombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
 
         getContentPane().add(comboclientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 230, -1));
 
+        tarjetasclientecombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tarjetasclientecomboActionPerformed(evt);
+            }
+        });
         getContentPane().add(tarjetasclientecombo, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 50, 230, -1));
         getContentPane().add(fondoMovimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 512, 320));
 
@@ -126,7 +136,7 @@ public class MovimientoVista extends javax.swing.JFrame {
         String establecimiento = establecimientoTexto.getText();
         int monto = Integer.valueOf(montotexto.getText());
         LocalDate fecha = LocalDate.now();
-        tarjeta tarjetaSeleccionada = (tarjeta) this.tarjetasclientecombo.getSelectedItem();
+        tarjeta tarjetaSeleccionada = (tarjeta)this.tarjetasclientecombo.getSelectedItem();
 
         double dineroActual = tarjetaSeleccionada.getDinero() - monto;
         if (dineroActual >= 0) {
@@ -147,6 +157,16 @@ public class MovimientoVista extends javax.swing.JFrame {
         // -----------
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        menu regresomenu = new menu();
+         regresomenu.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void tarjetasclientecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarjetasclientecomboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tarjetasclientecomboActionPerformed
 
     /**
      * @param args the command line arguments

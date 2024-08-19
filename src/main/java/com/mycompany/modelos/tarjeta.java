@@ -90,4 +90,10 @@ public class tarjeta {
     public tarjeta(long noTarjeta){
         this.noDeTarjeta = noTarjeta;
     }
+
+    @Override
+    public String toString() {
+      return String.valueOf(noDeTarjeta);
+    }
+    
 }

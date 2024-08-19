@@ -27,65 +27,100 @@ public class menu extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        botonCliente = new javax.swing.JButton();
+        botonsolicitud = new javax.swing.JButton();
+        botonmovimientos = new javax.swing.JButton();
+        botonCancelarTarjetas = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("que deseas hacer?");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 60, -1, -1));
 
-        jButton1.setText("cliente");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botonCliente.setText("cliente");
+        botonCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonClienteActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 120, -1, -1));
+        getContentPane().add(botonCliente, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
 
-        jButton2.setText("solicitud");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        botonsolicitud.setText("solicitud");
+        botonsolicitud.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                botonsolicitudActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 120, -1, -1));
+        getContentPane().add(botonsolicitud, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, -1));
 
-        jButton3.setText("movimientos");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 210, -1, -1));
+        botonmovimientos.setText("movimientos");
+        botonmovimientos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonmovimientosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(botonmovimientos, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
-        jButton4.setText("tarjetas");
-        getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, -1));
+        botonCancelarTarjetas.setText("Cancelar tarjetas");
+        botonCancelarTarjetas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCancelarTarjetasActionPerformed(evt);
+            }
+        });
+        getContentPane().add(botonCancelarTarjetas, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, -1));
 
         jButton5.setText("reportes");
-        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 260, -1, -1));
-
-        jButton6.setText("jButton6");
-        getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, -1, -1));
-
-        jLabel2.setText("jLabel2");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 510, 520));
+        getContentPane().add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 520));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void botonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonClienteActionPerformed
         // TODO add your handling code here:
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+           crearcliente crearCliente = new crearcliente();
+         crearCliente.setVisible(true);
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        
+        
+    }//GEN-LAST:event_botonClienteActionPerformed
+
+    private void botonsolicitudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonsolicitudActionPerformed
         // TODO add your handling code here:
+         solicitudVista solicitudvista = new solicitudVista();
+         solicitudvista.setVisible(true);
         
         
-    }//GEN-LAST:event_jButton2ActionPerformed
+        
+    }//GEN-LAST:event_botonsolicitudActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+           cargarArchivoVista carga = new cargarArchivoVista();
+         carga.setVisible(true);
+
+        
+    }//GEN-LAST:event_formWindowClosing
+
+    private void botonmovimientosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonmovimientosActionPerformed
+        // TODO add your handling code here:
+        MovimientoVista movimiento = new MovimientoVista();
+         movimiento.setVisible(true);
+    }//GEN-LAST:event_botonmovimientosActionPerformed
+
+    private void botonCancelarTarjetasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCancelarTarjetasActionPerformed
+        // TODO add your handling code here:
+        cancelarTarjetaVista cancelacion = new cancelarTarjetaVista();
+         cancelacion.setVisible(true);
+    }//GEN-LAST:event_botonCancelarTarjetasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -123,12 +158,11 @@ public class menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton botonCancelarTarjetas;
+    private javax.swing.JButton botonCliente;
+    private javax.swing.JButton botonmovimientos;
+    private javax.swing.JButton botonsolicitud;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
