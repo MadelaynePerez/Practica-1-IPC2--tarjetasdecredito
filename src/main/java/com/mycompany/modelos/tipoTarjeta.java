@@ -12,6 +12,15 @@ public class tipoTarjeta {
     int idTipo;
    double interes;
    String nombreTarjeta;
+   double credito;
+
+    public double getCredito() {
+        return credito;
+    }
+
+    public void setCredito(double credito) {
+        this.credito = credito;
+    }
 
     public int getIdTipo() {
         return idTipo;
@@ -42,7 +51,10 @@ public class tipoTarjeta {
         this.interes = interes;
         this.nombreTarjeta = nombreTarjeta;
     }
+
+    @Override
+    public String toString() {
+        return this.nombreTarjeta;
+    }
    
-   
-    
 }

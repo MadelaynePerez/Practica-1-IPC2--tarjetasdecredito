@@ -74,13 +74,14 @@ public class QueryTipoTarjeta implements IBaseCrud<tipoTarjeta> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id_tipo, interes, nombre_tipo_tarjeta FROM tipo_tarjeta";
+            String sql = "SELECT id_tipo, interes, nombre_tipo_tarjeta, credito FROM tipo_tarjeta";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
                 int id = resultado.getInt("id_tipo");
                 Double interes = resultado.getDouble("interes");
-                String nombretarjeta = resultado.getString("nombretarjeta");
+                String nombretarjeta = resultado.getString("nombre_tipo_tarjeta");
+                Double credito = resultado.getDouble("credito");
 
                 tipoTarjeta temporal = new tipoTarjeta(id, interes, nombretarjeta);
                 tarjetastipos.add(temporal);

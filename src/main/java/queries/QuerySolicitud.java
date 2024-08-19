@@ -35,10 +35,14 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             preparedStatement = connection.prepareStatement(sql);
 
             // 4. Configurar los valores para el INSERT
-            preparedStatement.setInt(1, entidad.getSalario());
+            preparedStatement.setDouble(1, entidad.getSalario());
             preparedStatement.setInt(2, entidad.getTipoDeTarjeta());
             preparedStatement.setDate(3, java.sql.Date.valueOf(entidad.getFechaSolicitud()));
-            preparedStatement.setDate(4, java.sql.Date.valueOf(entidad.getFechaAutorizado()));
+            if(entidad.getFechaAutorizado()!= null){
+                 preparedStatement.setDate(4, java.sql.Date.valueOf(entidad.getFechaAutorizado()));
+            }else{
+                preparedStatement.setDate(4,null);
+            }
             preparedStatement.setString(5, entidad.getMotivoRechazo());
 
             // 5. Ejecutar el comando
@@ -122,7 +126,7 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             pstmt = connection.prepareStatement(sql);
 
             // Establecer los valores de los parámetros
-            pstmt.setInt(1, entidadActualizar.getSalario());
+            pstmt.setDouble(1, entidadActualizar.getSalario());
             pstmt.setInt(2, entidadActualizar.getTipoDeTarjeta());
             pstmt.setInt(3, entidadActualizar.getIdSolicitud()); // Suponiendo que actualizas el registro con id=1
 
@@ -165,7 +169,7 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
                 int idSolicitud = resultado.getInt("id_solicitud");
-                int salario = resultado.getInt("salario");
+                double salario = resultado.getDouble("salario");
                 int tipoDeTarjeta = resultado.getInt("tipo_de_tarjeta");
                 LocalDate fechaSolicitud = resultado.getDate("fecha_solicitud").toLocalDate();
                 LocalDate fechaAutorizado = resultado.getDate("fecha_autorizado").toLocalDate();
@@ -210,7 +214,7 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
                 int idSolicitud = resultado.getInt("id_solicitud");
-                int salario = resultado.getInt("salario");
+                double salario = resultado.getDouble("salario");
                 int tipoDeTarjeta = resultado.getInt("");
                 LocalDate fechaSolicitud = resultado.getDate("fecha_solicitud").toLocalDate();
                 LocalDate fechaAutorizado = resultado.getDate("fecha_autorizado").toLocalDate();
@@ -237,5 +241,15 @@ public class QuerySolicitud implements IBaseCrud<solicitud> {
 
         return null;
     }
-
+    public boolean AutorizarTarjeta(int salario, double credito){
+        
+        double creditoTarjeta = 0.6;
+        if(salario * creditoTarjeta > credito){
+            
+            return true;
+        }else{
+            return false;
+        }
+            
+    }
 }

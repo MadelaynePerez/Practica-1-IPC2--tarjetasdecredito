@@ -44,6 +44,11 @@ public class cliente {
         this.direccion = direccion;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     
     
 }

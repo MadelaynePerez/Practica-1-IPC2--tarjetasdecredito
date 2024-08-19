@@ -4,39 +4,50 @@
  */
 package com.mycompany.modelos;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author DELL
  */
 public class movimiento {
+     long tarjetaOrigen;
     int idMovimiento;
-    String nombre;
-    String direccion;
     String descripcion;
-    int monto;
+    double monto;
+    String establecimiento;
+    LocalDate fecha;
+
+    public long getTarjetaOrigen() {
+        return tarjetaOrigen;
+    }
+
+    public void setTarjetaOrigen(long tarjetaOrigen) {
+        this.tarjetaOrigen = tarjetaOrigen;
+    }
 
     public int getIdMovimiento() {
         return idMovimiento;
     }
 
+    public String getEstablecimiento() {
+        return establecimiento;
+    }
+
+    public void setEstablecimiento(String establecimiento) {
+        this.establecimiento = establecimiento;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
     public void setIdMovimiento(int idMovimiento) {
         this.idMovimiento = idMovimiento;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     public String getDescripcion() {
@@ -47,20 +58,21 @@ public class movimiento {
         this.descripcion = descripcion;
     }
 
-    public int getMonto() {
+    public double getMonto() {
         return monto;
     }
 
-    public void setMonto(int monto) {
+    public void setMonto(double monto) {
         this.monto = monto;
     }
 
-    public movimiento(int idMovimiento, String nombre, String direccion, String descripcion, int monto) {
+    public movimiento(int idMovimiento, String descripcion, double monto, String establecimiento, LocalDate fecha, Long tarjetaOrigen) {
         this.idMovimiento = idMovimiento;
-        this.nombre = nombre;
-        this.direccion = direccion;
         this.descripcion = descripcion;
         this.monto = monto;
+        this.establecimiento = establecimiento;
+        this.fecha = fecha;
+        this.tarjetaOrigen=tarjetaOrigen;
     }
     
     
