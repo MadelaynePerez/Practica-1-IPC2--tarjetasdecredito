@@ -28,7 +28,7 @@ public class QueryMovimiento implements IBaseCrud<movimiento> {
             // 1. Establecer la conexión con la base de datos
             connection = coneccion.getConnection();
             // 2. Crear el comando SQL para insertar datos
-            String sql = "INSERT INTO movimiento ( descripcion, monto, establecimiento, fecha, tarjeta_origen) VALUES (  ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO movimiento ( descripcion, monto, establecimiento, fecha, tarjeta_origen, tipo_movimiento) VALUES (  ?, ?, ?, ?, ?, ?)";
 
             // 3. Crear el PreparedStatement
             preparedStatement = connection.prepareStatement(sql);
@@ -39,6 +39,7 @@ public class QueryMovimiento implements IBaseCrud<movimiento> {
             preparedStatement.setString(3, entidad.getEstablecimiento());
             preparedStatement.setDate(4, java.sql.Date.valueOf(entidad.getFecha()));
             preparedStatement.setLong(5, entidad.getTarjetaOrigen());
+            preparedStatement.setString(6, entidad.getTipoMovimiento());
 
             // 5. Ejecutar el comando
             int rowsInserted = preparedStatement.executeUpdate();
@@ -80,7 +81,7 @@ public class QueryMovimiento implements IBaseCrud<movimiento> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT id_movimiento,  descripcion, monto, establecimiento, fecha FROM movimiento";
+            String sql = "SELECT id_movimiento,  descripcion, monto, establecimiento, fecha, tipo_movimiento FROM movimiento";
             pstmt = connection.prepareStatement(sql);
             ResultSet resultado = pstmt.executeQuery();
             while (resultado.next()) {
@@ -90,8 +91,50 @@ public class QueryMovimiento implements IBaseCrud<movimiento> {
                 String establecimiento = resultado.getString("establecimiento");
                 LocalDate fecha = resultado.getDate("fecha").toLocalDate();
                 Long tarjetaOrigen = resultado.getLong("tarjeta_origen");
+                String tipo = resultado.getString("tipo_movimiento");
 
-                movimiento temporal = new movimiento(idMovimiento,  descripcion, monto, establecimiento, fecha, tarjetaOrigen);
+                movimiento temporal = new movimiento(idMovimiento,  descripcion, monto, establecimiento, fecha, tarjetaOrigen, tipo);
+                movimientos.add(temporal);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return movimientos;
+    }
+
+        public ArrayList<movimiento> listarPorTarjeta(Long noTarjeta) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        ArrayList<movimiento> movimientos = new ArrayList();
+        try {
+            connection = coneccion.getConnection();
+
+            String sql = "SELECT id_movimiento,  descripcion, monto, establecimiento, fecha, tipo_movimiento,tarjeta_origen FROM movimiento WHERE tarjeta_origen = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setLong(1, noTarjeta);
+            ResultSet resultado = pstmt.executeQuery();
+            while (resultado.next()) {
+                int idMovimiento = resultado.getInt("id_movimiento");
+                String descripcion = resultado.getString("descripcion");
+                double monto = resultado.getDouble("monto");
+                String establecimiento = resultado.getString("establecimiento");
+                LocalDate fecha = resultado.getDate("fecha").toLocalDate();
+                Long tarjetaOrigen = resultado.getLong("tarjeta_origen");
+                String tipo = resultado.getString("tipo_movimiento");
+
+                movimiento temporal = new movimiento(idMovimiento,  descripcion, monto, establecimiento, fecha, tarjetaOrigen, tipo);
                 movimientos.add(temporal);
             }
 

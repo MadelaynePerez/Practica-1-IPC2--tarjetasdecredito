@@ -90,7 +90,7 @@ public class QuerySecuenciaTarjeta implements IBaseCrud<SecuenciaTarjeta> {
         try {
             connection = coneccion.getConnection();
 
-            String sql = "SELECT tipo_tarjeta, ulltimo_valor FROM secuencias_tarjetas WHERE tipo_tarjeta = ?";
+            String sql = "SELECT tipo_tarjeta, ultimo_valor FROM secuencias_tarjetas WHERE tipo_tarjeta = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setString(1, nombreTipoTarjeta);
             ResultSet resultado = pstmt.executeQuery();

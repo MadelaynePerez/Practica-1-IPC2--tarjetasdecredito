@@ -219,5 +219,43 @@ public class QueryCliente implements IBaseCrud<cliente> {
         return null;
     }
    
+    public cliente encontrarPorNombre(String nombreCliente) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            connection = coneccion.getConnection();
+
+            String sql = "SELECT id,nombre,direccion FROM cliente WHERE nombre = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, nombreCliente);
+            ResultSet resultado = pstmt.executeQuery();
+            while (resultado.next()) {
+                int idSeleccionado = resultado.getInt("id");
+                String nombre = resultado.getString("nombre");
+                String direccion = resultado.getString("direccion");
+
+                cliente temporal = new cliente(idSeleccionado, nombre, direccion);
+                return temporal;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
+    }
+   
 
 }

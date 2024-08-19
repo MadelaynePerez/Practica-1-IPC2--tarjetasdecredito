@@ -68,7 +68,7 @@ public class QueryTipoTarjeta implements IBaseCrud<tipoTarjeta> {
 
     @Override
     public ArrayList<tipoTarjeta> listar() {
-    Connection connection = null;
+        Connection connection = null;
         PreparedStatement pstmt = null;
         ArrayList<tipoTarjeta> tarjetastipos = new ArrayList();
         try {
@@ -83,7 +83,7 @@ public class QueryTipoTarjeta implements IBaseCrud<tipoTarjeta> {
                 String nombretarjeta = resultado.getString("nombre_tipo_tarjeta");
                 Double credito = resultado.getDouble("credito");
 
-                tipoTarjeta temporal = new tipoTarjeta(id, interes, nombretarjeta);
+                tipoTarjeta temporal = new tipoTarjeta(id, interes, nombretarjeta,credito);
                 tarjetastipos.add(temporal);
             }
 
@@ -106,7 +106,78 @@ public class QueryTipoTarjeta implements IBaseCrud<tipoTarjeta> {
 
     @Override
     public tipoTarjeta encontrarPorId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        
+        try {
+            connection = coneccion.getConnection();
+
+            String sql = "SELECT id_tipo, interes, nombre_tipo_tarjeta, credito FROM tipo_tarjeta WHERE id_tipo = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet resultado = pstmt.executeQuery();
+            while (resultado.next()) {
+                Double interes = resultado.getDouble("interes");
+                String nombretarjeta = resultado.getString("nombre_tipo_tarjeta");
+                Double credito = resultado.getDouble("credito");
+
+                tipoTarjeta temporal = new tipoTarjeta(id, interes, nombretarjeta,credito);
+                return temporal;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
+    public tipoTarjeta encontrarPorNombre(String nombre) {
+        Connection connection = null;
+        PreparedStatement pstmt = null;
+        
+        try {
+            connection = coneccion.getConnection();
+
+            String sql = "SELECT id_tipo, interes, nombre_tipo_tarjeta, credito FROM tipo_tarjeta WHERE nombre_tipo_tarjeta = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, nombre);
+            ResultSet resultado = pstmt.executeQuery();
+            while (resultado.next()) {
+                int id = resultado.getInt("id_tipo");
+                Double interes = resultado.getDouble("interes");
+                String nombretarjeta = resultado.getString("nombre_tipo_tarjeta");
+                Double credito = resultado.getDouble("credito");
+
+                tipoTarjeta temporal = new tipoTarjeta(id, interes, nombretarjeta,credito);
+                return temporal;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
     
 }

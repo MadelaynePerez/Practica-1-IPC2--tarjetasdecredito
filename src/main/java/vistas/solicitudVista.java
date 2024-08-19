@@ -76,13 +76,15 @@ public class solicitudVista extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        idsolicitud = new javax.swing.JTextField();
         fondoVistaSolicitud = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setText("Nombre");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
+        jLabel4.setText("ID");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, -1, -1));
 
         jLabel5.setText("Salario");
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 180, -1, -1));
@@ -114,8 +116,12 @@ public class solicitudVista extends javax.swing.JFrame {
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, -1, -1));
 
         jLabel6.setText("CREAR SOLICITUD");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 60, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, -1, -1));
+        getContentPane().add(idsolicitud, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 50, 220, -1));
         getContentPane().add(fondoVistaSolicitud, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+
+        jLabel7.setText("Nombre");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -138,27 +144,30 @@ public class solicitudVista extends javax.swing.JFrame {
         tipoTarjeta tipoTarjetaSeleccionado = (tipoTarjeta) this.tipodeTarjeta.getSelectedItem();
         String tipo = tipoTarjetaSeleccionado.getNombreTarjeta();
         int salario = Integer.parseInt(TextoSalario.getText());
+        int idSolicitud = Integer.parseInt(idsolicitud.getText());
         LocalDate date2 = LocalDate.now();
 
         QuerySolicitud querySolicitud = new QuerySolicitud();
 
         if (querySolicitud.AutorizarTarjeta(salario, tipoTarjetaSeleccionado.getCredito())) {
-            solicitud tmp = new solicitud(-1, salario, tipoTarjetaSeleccionado.getIdTipo(), date2, date2, "");
-            querySolicitud.crear(tmp);
-
+            
             QuerySecuenciaTarjeta querySecuenciaTarjeta = new QuerySecuenciaTarjeta();
             SecuenciaTarjeta secuenciaObtenida = querySecuenciaTarjeta.ObtenerSecuencia(tipo);
             
+            solicitud tmp = new solicitud(idSolicitud, salario, tipoTarjetaSeleccionado.getIdTipo(), date2, date2, "",secuenciaObtenida.getUltimoValor());
+            tmp.setCliente(clienteSeleccionado);
+            querySolicitud.crear(tmp);
             
             tarjeta tarjetaAutorizado = new tarjeta(secuenciaObtenida.getUltimoValor(),
                     nombre, tipoTarjetaSeleccionado.getIdTipo(), date2, "Activo", clienteSeleccionado.getId(), tipoTarjetaSeleccionado.getCredito());
             QueryTarjeta queryTarjeta = new QueryTarjeta();
             queryTarjeta.crear(tarjetaAutorizado);
-
+            
+            querySecuenciaTarjeta.actualizar(secuenciaObtenida);
             JOptionPane.showMessageDialog(null, "Felicidades, tu tarejta se ha autorizado");
 
         } else {
-            solicitud tmp = new solicitud(-1, salario, tipoTarjetaSeleccionado.getIdTipo(), date2, null, "NO ALCANZO EL PORCENTAJE SOLICITADO");
+            solicitud tmp = new solicitud(-1, salario, tipoTarjetaSeleccionado.getIdTipo(), date2, null, "NO ALCANZO EL PORCENTAJE SOLICITADO",-1);
             querySolicitud.crear(tmp);
             JOptionPane.showMessageDialog(null, "No ALCANZO EL SUELDO SOLICITADO");
         }
@@ -206,11 +215,13 @@ public class solicitudVista extends javax.swing.JFrame {
     private javax.swing.JTextField TextoSalario;
     private javax.swing.JComboBox<cliente> comboNombre;
     private javax.swing.JLabel fondoVistaSolicitud;
+    private javax.swing.JTextField idsolicitud;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JComboBox<tipoTarjeta> tipodeTarjeta;
     // End of variables declaration//GEN-END:variables
 }
