@@ -21,6 +21,7 @@ public class cancelarTarjetaVista extends javax.swing.JFrame {
      */
     public cancelarTarjetaVista() {
         initComponents();
+        LlenarComboNombre();
     }
 
     public void LlenarComboNombre() {
@@ -61,11 +62,28 @@ public class cancelarTarjetaVista extends javax.swing.JFrame {
         tarjetasclientecombo = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
+
+        comboclientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboclientesActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Cliente");
 
         jLabel2.setText("Tarjeta");
+
+        tarjetasclientecombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tarjetasclientecomboActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Cancelar tarjeta");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +139,20 @@ public class cancelarTarjetaVista extends javax.swing.JFrame {
         tarjetaSeleccionada.setEstadoTarjeta("CANCELADA");
         queryTarjeta.actualizar(tarjetaSeleccionada);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        menu regresomenu = new menu();
+         regresomenu.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void comboclientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboclientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboclientesActionPerformed
+
+    private void tarjetasclientecomboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tarjetasclientecomboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tarjetasclientecomboActionPerformed
 
     /**
      * @param args the command line arguments
